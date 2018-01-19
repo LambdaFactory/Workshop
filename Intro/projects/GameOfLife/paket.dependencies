@@ -1,0 +1,11 @@
+source https://www.nuget.org/api/v2
+
+framework: >= net461
+nuget FAKE
+nuget FSharp.Core
+nuget Suave
+nuget Newtonsoft.Json
+nuget xunit
+nuget fscheck.xunit
+nuget xunit.runner.visualstudio
+nuget Microsoft.NET.Test.Sdk
