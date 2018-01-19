@@ -28,6 +28,11 @@ type CustomerName(firstName, middleInitial, lastName) =
 //     public string LastName { get; private set; }
 // }
 
+type CustomerName2(firstName : string, middleInitial : string, lastName : string) =
+    member this.FirstName = firstName
+    member this.MiddleInitial = middleInitial
+    member this.LastName = lastName
+
 
 // The example class above has three read-only instance properties. In F#, both properties and methods use the member keyword.
 
@@ -197,3 +202,85 @@ type Rocket() =
 //TODO: Implement classical shape hierarchy including types like Shape, Circle, Rectangle, Square, Triangle and functionalities like calculating areas, perimeters, and returning nice formatted string with information about object (TIP: You can override `ToString` method).
 
 (*********************************************************************************************************************)
+
+// Interfaces are available and fully supported in F#, but there are number of important ways in which
+// their usage differs from what you might be used to in C#.
+
+// Definition of interface is really simillar to Abstract Class. The differences are - lack of any additional attribute
+// and no parenthesis - interfaces have no constructor
+
+type MyInterface =
+   // abstract method
+   abstract member Add: int -> int -> int
+
+   // abstract immutable property
+   abstract member Pi : float
+
+   // abstract read/write property
+   abstract member Area : float with get,set
+
+// When it comes time to implement an interface in a class, F# is quite different from C#.
+// In C#, you can add a list of interfaces to the class definition and implement the interfaces implicitly.
+// Not so in F#. In F#, all interfaces must be explicitly implemented.
+// In an explicit interface implementation, the interface members can only be accessed through an interface instance
+// (e.g. by casting the class to the interface type). The interface members are not visible as part of the class itself.
+
+type IAddingService =
+    abstract member Add: int -> int -> int
+
+type MyAddingService() =
+
+    interface IAddingService with
+        member this.Add x y =
+            x + y
+
+    interface System.IDisposable with
+        member this.Dispose() =
+            printfn "disposed"
+
+//Using interfaces
+
+let mas = new MyAddingService()
+// mas.Add 1 2 //error
+let adder = mas :> IAddingService
+adder.Add 1 2  // ok
+
+// This might seem incredibly awkward, but in practice it is not a problem as in most cases the casting is done implicitly for you.
+
+// For example, you will typically be passing an instance to a function that specifies an interface parameter.
+// In this case, the casting is done automatically:
+
+// function that requires an interface
+let testAddingService (adder:IAddingService) =
+    printfn "1+2=%i" <| adder.Add 1 2  // ok
+
+testAddingService mas // cast automatically
+
+(*********************************************************************************************************************)
+
+
+// An Object Expression is an F# expression that  creates a new type "on the fly".
+// The new type created is anonymous, meaning it has no accessibility and must be based on an existing base type interface or set of interfaces.
+// Object Expressions are at the heart of object oriented programming in F#.
+// They provide a concise syntax to create an object that inherits from an existing type.
+
+type ISession<'a> =
+    abstract member Get : unit -> 'a
+    abstract member Put : 'a -> unit
+
+let counter initialState =
+  let mutable state = initialState
+  { new ISession<int> with
+      member x.Put(value) =
+        state <- state + value
+      member x.Get() =
+        state
+  }
+
+//TODO: Implement IEnumerator<T> to encapsulate two collection iterators
+//so that you can iterate over both at the same time and perform calculation on each item.
+
+open System.Collections.Generic
+
+let map2 f (e1 : IEnumerator<'a>) (e2 : IEnumerator<'b>) : IEnumerator<'c> =
+    failwith ""
