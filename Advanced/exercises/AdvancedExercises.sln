@@ -5,6 +5,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		active_patterns.fsx = active_patterns.fsx
 		object_programming.fsx = object_programming.fsx
+		async.fsx = async.fsx
+		validation.fsx = validation.fsx
+		code_organization.fsx = code_organizaion.fsx
+		dependency_injection.fsx = dependency_injection.fsx
+
 
 		examples.fs = examples.fs
 	EndProjectSection
