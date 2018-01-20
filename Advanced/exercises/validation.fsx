@@ -160,39 +160,39 @@ let plus (addSuccess: 'a -> 'b -> 'c) (addFailure: 'd -> 'd -> 'd) (switch1: 'e 
 
 // TODO: Create useCase handler, this time using helper functions we've created above.
 
-let useCase (request: Request) : string =
+let useCase' (request: Request) : string =
     failwith "TODO"
 
 test "Everything fine" (fun _ ->
     let t = {name = "Chris"; email = "abc@abc.com"}
-    useCase t = "OK"
+    useCase' t = "OK"
 )
 
 test "Validation can fail" (fun _ ->
     let t = {name = ""; email = "abc@abc.com"}
-    useCase t = "Name must not be blank"
+    useCase' t = "Name must not be blank"
 )
 
 test "Validation can fail 2" (fun _ ->
     let t = {name = "abc"; email = ""}
-    useCase t = "Email must not be blank"
+    useCase' t = "Email must not be blank"
 )
 
 test "Validation can fail 3" (fun _ ->
     let t = {name = ""; email = ""}
-    useCase t = "Name must not be blank;Email must not be blank"
+    useCase' t = "Name must not be blank;Email must not be blank"
 )
 
 test "Exist Check can fail" (fun _ ->
     let t = {name = "failOnExistCheck"; email = "abc@abc.com"}
-    useCase t = "Record not existing"
+    useCase' t = "Record not existing"
 )
 
 test "Update can fail" (fun _ ->
     let t = {name = "failOnUpdate"; email = "abc@abc.com"}
-    useCase t = "Update failed"
+    useCase' t = "Update failed"
 )
 
 test "Send email can fail" (fun _ ->
     let t = {name = "failOnEmail"; email = "abc@abc.com"}
-    useCase t = "SMTP error"
+    useCase' t = "SMTP error")
